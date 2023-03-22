@@ -52,7 +52,7 @@ func makeRequest(method string, s string, headers []string_pair, body []byte) (b
 
 func (l *DefaultLogger) sendMessage(message string) bool {
 	headers := []string_pair{{fi: "Content-Type", se: "application/json"}}
-	newmessage := "{\"content\":\"" + message + "\",\"username\":\"Info\"}"
+	newmessage := "{\"content\":\"" + message + "\",\"username\":\"" + l.name + "\"}"
 	_, _, StatusCode, ok := makeRequest("POST", l.url, headers, []byte(newmessage))
 	logf(message + "\n")
 	logf("%d\n", StatusCode)
