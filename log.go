@@ -77,6 +77,26 @@ func (l *DefaultLogger) Fatalf(msg string, args ...interface{}) {
 	}
 }
 
+func (l *DefaultLogger) Debug(msg string) {
+	l.Debugf(msg)
+}
+
+func (l *DefaultLogger) Info(msg string) {
+	l.Infof(msg)
+}
+
+func (l *DefaultLogger) Warn(msg string) {
+	l.Warnf(msg)
+}
+
+func (l *DefaultLogger) Error(msg string) {
+	l.Errorf(msg)
+}
+
+func (l *DefaultLogger) Fatal(msg string) {
+	l.Fatalf(msg)
+}
+
 func (l *DefaultLogger) log(level LogLevel, msg string, args ...interface{}) {
 	formattedMsg := fmt.Sprintf("[%s] [%s] %s \\n", time.Now().Format(time.RFC3339), levelToString(level), fmt.Sprintf(msg, args...))
 	l.sendMessage(formattedMsg)
