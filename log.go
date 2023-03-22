@@ -3,6 +3,7 @@ package webhookLog
 import (
 	"fmt"
 	"os"
+	"regexp"
 	"time"
 )
 
@@ -97,8 +98,14 @@ func (l *DefaultLogger) Fatal(msg string) {
 }
 
 func (l *DefaultLogger) log(level LogLevel, msg string, args ...interface{}) {
+	msg = replaceAllNewline(msg, "\\n")
 	formattedMsg := fmt.Sprintf("[%s] [%s] %s \\n", time.Now().Format(time.RFC3339), levelToString(level), fmt.Sprintf(msg, args...))
 	go l.sendMessage(formattedMsg)
+}
+
+func replaceAllNewline(in string, r string) string {
+	re := regexp.MustCompile("\\n")
+	return re.ReplaceAllString(in, r)
 }
 
 func levelToString(level LogLevel) string {
