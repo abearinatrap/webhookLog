@@ -33,10 +33,6 @@ type DefaultLogger struct {
 	level LogLevel
 }
 
-func Test() {
-
-}
-
 func NewDefaultLogger(name string, key string) *DefaultLogger {
 	return &DefaultLogger{
 		level: Info,

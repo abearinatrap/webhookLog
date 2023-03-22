@@ -9,7 +9,7 @@ var Log *DefaultLogger
 
 func main() {
 	// test logging
-	Log = NewDefaultLogger("test", "webhookkey here")
+	Log = NewDefaultLogger("LOGGER_NAME", "WEBHOOK_KEY")
 	start := time.Now()
 	Log.Infof("Testing log")
 	duration := time.Since(start)
