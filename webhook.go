@@ -54,7 +54,7 @@ func (l *DefaultLogger) sendMessage(message string) bool {
 	headers := []string_pair{{fi: "Content-Type", se: "application/json"}}
 	newmessage := "{\"content\":\"" + message + "\",\"username\":\"Info\"}"
 	_, _, StatusCode, ok := makeRequest("POST", l.url, headers, []byte(newmessage))
-	logf(newmessage + "\n")
+	logf(message + "\n")
 	logf("%d\n", StatusCode)
 	if !ok || StatusCode != 200 {
 		return false

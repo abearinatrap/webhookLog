@@ -27,18 +27,17 @@ type Logger interface {
 
 type DefaultLogger struct {
 	name  string
-	whid  string
 	key   string
 	url   string
 	level LogLevel
 }
 
-func NewDefaultLogger(name string, key string) *DefaultLogger {
+func NewDefaultLogger(name string, nkey string) *DefaultLogger {
 	return &DefaultLogger{
 		level: Info,
 		name:  name,
-		key:   key,
-		url:   "https://discord.com/api/webhooks/" + key,
+		key:   nkey,
+		url:   "https://discord.com/api/webhooks/" + nkey,
 	}
 }
 
@@ -99,7 +98,7 @@ func (l *DefaultLogger) Fatal(msg string) {
 
 func (l *DefaultLogger) log(level LogLevel, msg string, args ...interface{}) {
 	formattedMsg := fmt.Sprintf("[%s] [%s] %s \\n", time.Now().Format(time.RFC3339), levelToString(level), fmt.Sprintf(msg, args...))
-	l.sendMessage(formattedMsg)
+	go l.sendMessage(formattedMsg)
 }
 
 func levelToString(level LogLevel) string {
