@@ -27,19 +27,25 @@ type Logger interface {
 }
 
 type DefaultLogger struct {
-	name  string
-	key   string
-	url   string
-	level LogLevel
+	name      string
+	key       string
+	url       string
+	level     LogLevel
+	queue     chan string
+	queueSize int
 }
 
 func NewDefaultLogger(name string, nkey string) *DefaultLogger {
-	return &DefaultLogger{
-		level: Info,
-		name:  name,
-		key:   nkey,
-		url:   "https://discord.com/api/webhooks/" + nkey,
+	l := &DefaultLogger{
+		level:     Info,
+		name:      name,
+		key:       nkey,
+		queueSize: 100,
+		url:       "https://discord.com/api/webhooks/" + nkey,
 	}
+	go l.runBack()
+
+	return l
 }
 
 func (l *DefaultLogger) SetLevel(level LogLevel) {
@@ -100,7 +106,7 @@ func (l *DefaultLogger) Fatal(msg string) {
 func (l *DefaultLogger) log(level LogLevel, msg string, args ...interface{}) {
 	msg = replaceAllNewline(msg, "\\n")
 	formattedMsg := fmt.Sprintf("[%s] [%s] %s \\n", time.Now().Format(time.RFC3339), levelToString(level), fmt.Sprintf(msg, args...))
-	go l.sendMessage(formattedMsg)
+	l.queue <- formattedMsg
 }
 
 func replaceAllNewline(in string, r string) string {

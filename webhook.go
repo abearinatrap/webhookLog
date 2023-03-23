@@ -55,10 +55,9 @@ func (l *DefaultLogger) sendMessage(message string) bool {
 	newmessage := "{\"content\":\"" + message + "\",\"username\":\"" + l.name + "\"}"
 	_, _, StatusCode, ok := makeRequest("POST", l.url, headers, []byte(newmessage))
 	logf(message + "\n")
-	logf("%d\n", StatusCode)
-	if !ok || StatusCode != 200 {
+	logf("%d %v\n", StatusCode, ok)
+	if !ok || StatusCode >= 300 {
 		return false
 	}
-
 	return true
 }
