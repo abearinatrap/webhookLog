@@ -11,4 +11,4 @@ Log.Info("Logging setup")
 ```
 
 ###### Install
-`go get github.com/abearinatrap/webhookLog`
+`go get github.com/abearinatrap/webhookLog@v0.1.5`
