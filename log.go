@@ -52,6 +52,11 @@ func (l *DefaultLogger) SetLevel(level LogLevel) {
 	l.level = level
 }
 
+func (l *DefaultLogger) SetKey(key string) {
+	l.key = key
+	l.url = "https://discord.com/api/webhooks/" + key
+}
+
 func (l *DefaultLogger) Debugf(msg string, args ...interface{}) {
 	if l.level <= Debug {
 		l.log(Debug, msg, args...)

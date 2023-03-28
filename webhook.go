@@ -50,14 +50,26 @@ func makeRequest(method string, s string, headers []string_pair, body []byte) (b
 	return
 }
 
-func (l *DefaultLogger) sendMessage(message string) bool {
+func (l *DefaultLogger) sendMessage(message string) (alterm string, request_code int) {
+	// returns alterm, good_request
+	const MAX_MESSAGE_SIZE = 2000
+	var messageToSend string
+
 	headers := []string_pair{{fi: "Content-Type", se: "application/json"}}
-	newmessage := "{\"content\":\"" + message + "\",\"username\":\"" + l.name + "\"}"
-	_, _, StatusCode, ok := makeRequest("POST", l.url, headers, []byte(newmessage))
-	logf(message + "\n")
-	logf("%d %v\n", StatusCode, ok)
-	if !ok || StatusCode >= 300 {
-		return false
+	if len(message) > MAX_MESSAGE_SIZE {
+		alterm = message[MAX_MESSAGE_SIZE:]
+		messageToSend = message[:MAX_MESSAGE_SIZE]
+	} else {
+		alterm = ""
+		messageToSend = message[:]
 	}
-	return true
+
+	newmessage := "{\"content\":\"" + messageToSend + "\",\"username\":\"" + l.name + "\"}"
+	_, _, StatusCode, ok := makeRequest("POST", l.url, headers, []byte(newmessage))
+	logf(messageToSend+"\n%d %v\n", StatusCode, ok)
+	if !ok || StatusCode >= 300 {
+		//bad request. do something?
+	}
+	request_code = StatusCode
+	return
 }

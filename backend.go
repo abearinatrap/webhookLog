@@ -9,9 +9,6 @@ func (l *DefaultLogger) runBack() {
 	for {
 		newMessage := <-l.queue
 		message += string(newMessage)
-		if !l.sendMessage(message) {
-			continue
-		}
-		message = ""
+		message, _ = l.sendMessage(message)
 	}
 }
