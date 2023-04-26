@@ -35,7 +35,7 @@ func makeRequest(method string, s string, headers []string_pair, body []byte) (b
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		panic(err)
+		log(err.Error())
 	}
 	defer resp.Body.Close()
 	StatusCode = resp.StatusCode
