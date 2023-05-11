@@ -115,10 +115,12 @@ func (l *DefaultLogger) log(level LogLevel, msg string, args ...interface{}) {
 }
 
 func replaceAllNewline(in string, r string) string {
-
+	dbslash := regexp.MustCompile("\\")
 	re := regexp.MustCompile("\\n")
 	reCR := regexp.MustCompile("\r")
-	noCR := reCR.ReplaceAllString(in, "")
+
+	db := dbslash.ReplaceAllString(in, "\\\\")
+	noCR := reCR.ReplaceAllString(db, "")
 	return re.ReplaceAllString(noCR, r)
 }
 
