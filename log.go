@@ -120,7 +120,7 @@ func replaceAllNewline(in string, r string) string {
 	reCR := regexp.MustCompile("\r")
 
 	db := strings.ReplaceAll(in, "\\", "\\\\") // replace \ with \\
-	rmP := strings.ReplaceAll(db, "%", "\\%")  // replace % with \% (fmt.sprintf will recognize %)
+	rmP := strings.ReplaceAll(db, "%", "%%")   // replace % with \% (fmt.sprintf will recognize %)
 	noCR := reCR.ReplaceAllString(rmP, "")     // remove carriage returns
 	return re.ReplaceAllString(noCR, r)
 }
