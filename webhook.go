@@ -63,7 +63,7 @@ func (l *DefaultLogger) sendMessage(message string) (alterm string, request_code
 		alterm = ""
 		messageToSend = message[:]
 	}
-	logf("Current msg size: %d", len(alterm))
+	logf("Current msg size: %d\n", len(alterm))
 	newmessage := "{\"content\":\"" + messageToSend + "\",\"username\":\"" + l.name + "\"}"
 	_, _, StatusCode, ok := makeRequest("POST", l.url, headers, []byte(newmessage))
 	logf(messageToSend+"\n%d %v\n", StatusCode, ok)
