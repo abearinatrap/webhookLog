@@ -115,8 +115,11 @@ func (l *DefaultLogger) log(level LogLevel, msg string, args ...interface{}) {
 }
 
 func replaceAllNewline(in string, r string) string {
+
 	re := regexp.MustCompile("\\n")
-	return re.ReplaceAllString(in, r)
+	reCR := regexp.MustCompile("\r")
+	noCR := reCR.ReplaceAllString(in, "")
+	return re.ReplaceAllString(noCR, r)
 }
 
 func levelToString(level LogLevel) string {
