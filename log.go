@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"strings"
 	"time"
 )
 
@@ -115,11 +116,10 @@ func (l *DefaultLogger) log(level LogLevel, msg string, args ...interface{}) {
 }
 
 func replaceAllNewline(in string, r string) string {
-	dbslash := regexp.MustCompile(`\`)
 	re := regexp.MustCompile("\\n")
 	reCR := regexp.MustCompile("\r")
 
-	db := dbslash.ReplaceAllString(in, `\\`)
+	db := strings.ReplaceAll(in, "\\", "\\\\")
 	noCR := reCR.ReplaceAllString(db, "")
 	return re.ReplaceAllString(noCR, r)
 }
