@@ -110,8 +110,9 @@ func (l *DefaultLogger) Fatal(msg string) {
 }
 
 func (l *DefaultLogger) log(level LogLevel, msg string, args ...interface{}) {
+	msg = fmt.Sprintf(msg, args...)
 	msg = replaceAllNewline(msg, "\\n")
-	formattedMsg := fmt.Sprintf("[%s] [%s] %s \\n", time.Now().Format(time.RFC3339), levelToString(level), fmt.Sprintf(msg, args...))
+	formattedMsg := fmt.Sprintf("[%s] [%s] %s \\n", time.Now().Format(time.RFC3339), levelToString(level), msg)
 	l.queue <- formattedMsg
 }
 
