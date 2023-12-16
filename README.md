@@ -1,6 +1,7 @@
 # webhookLog
 A simple package for using discord webhooks as a logging mechanism
 
+Rate limit is 16-17 logs a second, at 2000 characters max per webhook, this is 32000-34000 characters a second max you can log to discord
 
 ### Usage
 ```

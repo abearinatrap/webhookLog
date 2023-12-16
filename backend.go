@@ -8,7 +8,7 @@ import (
 func (l *DefaultLogger) runBack() {
 	l.queue = make(chan string, l.queueSize)
 	message := ""
-	fmt.Printf("Backend logger running")
+	fmt.Printf("%s%s", logPrefix, "Backend logger running")
 	waitTime := 1000
 	for {
 		//bounded execution time for log sending
@@ -18,8 +18,13 @@ func (l *DefaultLogger) runBack() {
 			message, _ = l.sendMessage(message)
 		case <-time.After(time.Duration(waitTime) * time.Millisecond):
 			if len(message) > 0 {
-				message, _ = l.sendMessage(message)
-				waitTime = 250
+				var statusCode int
+				message, statusCode = l.sendMessage(message)
+				if statusCode == 200 {
+					waitTime = 60
+				} else {
+					waitTime += 20
+				}
 			} else {
 				waitTime = 1000
 			}
